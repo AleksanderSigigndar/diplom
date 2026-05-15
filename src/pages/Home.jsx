@@ -92,7 +92,7 @@ const Home = () => {
             </div>
           </div>
           <div className="about-image">
-            <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&h=400&fit=crop" alt="luxury travel" />
+            <img src="https://i.pinimg.com/736x/8c/2c/32/8c2c329254e8dfe728d38bffbdc37c26.jpg" alt="luxury travel" />
           </div>
         </div>
       </div>
