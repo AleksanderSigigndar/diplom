@@ -29,7 +29,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-bg">
-        <img src="https://images.pexels.com/photos/1285625/pexels-photo-1285625.jpeg" alt="luxury" />
+        <img src="https://images.wallpaperscraft.ru/image/single/gory_oblaka_pejzazh_991814_3840x2400.jpg" alt="luxury" />
       </div>
       <div className="login-card">
         <h2>Welcome Back</h2>

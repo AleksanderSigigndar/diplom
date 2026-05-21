@@ -49,7 +49,7 @@ const Register = () => {
   return (
     <div className="register-container">
       <div className="register-bg">
-        <img src="https://images.pexels.com/photos/1285625/pexels-photo-1285625.jpeg" alt="luxury" />
+        <img src="https://images.wallpaperscraft.ru/image/single/gory_oblaka_pejzazh_991814_3840x2400.jpg" alt="luxury" />
       </div>
       <div className="register-card">
         <h2>Create Account</h2>

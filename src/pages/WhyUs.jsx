@@ -17,7 +17,7 @@ const WhyUs = () => {
       <div className="why-us-hero">
         <div className="why-us-hero-bg"></div>
         <div className="why-us-overlay">
-          <h1>Почему выбирают <span>LUX TRIPS</span></h1>
+          <h1>Почему выбирают <span>Визы и Путешествия</span></h1>
           <p>Путешествуйте с лучшими</p>
         </div>
       </div>

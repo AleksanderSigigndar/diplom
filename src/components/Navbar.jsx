@@ -29,8 +29,8 @@ const Navbar = () => {
         <Link to="/why-us" onClick={() => setMobileMenu(false)}>ПОЧЕМУ МЫ</Link>
       </div>
       <Link to="/" className="nav-logo" onClick={() => setMobileMenu(false)}>
-        <span className="logo-text">LUX</span>
-        <span className="logo-text-light">TRIPS</span>
+        <span className="logo-text">Визы{' \u00A0 '}и</span>
+        <span className="logo-text-light">{' \u00A0 '}ПУТЕШЕСТВИЯ</span>
       </Link>
       
       <div className="nav-right">
