@@ -16,12 +16,6 @@
   right: 0;
   bottom: 0;
   background: url('https://images.wallpaperscraft.ru/image/single/gory_oblaka_pejzazh_991814_3840x2400.jpg') center/cover;
-  animation: slowZoom 30s ease infinite;
-}
-
-@keyframes slowZoom {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
 }
 
 .tours-hero-overlay {
@@ -30,6 +24,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 250, 253, 0.85) 0%, rgba(245, 230, 243, 0.7) 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
