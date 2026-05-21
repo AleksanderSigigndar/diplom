@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-section">
-          <h3>LUX TRIPS</h3>
+          <h3>Визы и Пуутешествия</h3>
           <p>Премиум турагентство</p>
           <p>Создаём незабываемые путешествия</p>
           <p>с 2015 года</p>
@@ -24,8 +24,8 @@ const Footer = () => {
         <div className="footer-section">
           <h4>Контакты</h4>
           <p>+7 (495) 123-45-67</p>
-          <p>info@luxtrips.ru</p>
-          <p>Москва, ул. Тверская, 15</p>
+          <p>info@visiputeshestvia.ru</p>
+          <p>Санкт-Петербург, Невский пр. 71/1</p>
         </div>
         
         <div className="footer-section">
