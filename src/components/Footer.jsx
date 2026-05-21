@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-section">
-          <h3>Визы и Пуутешествия</h3>
+          <h3>Визы и Путешествия</h3>
           <p>Премиум турагентство</p>
           <p>Создаём незабываемые путешествия</p>
           <p>с 2015 года</p>
