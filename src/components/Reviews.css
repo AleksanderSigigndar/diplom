@@ -1,0 +1,268 @@
+.reviews-section {
+  margin-top: 40px;
+  padding: 30px;
+  background: white;
+  border-radius: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 5px 20px rgba(212, 175, 55, 0.05);
+}
+
+.reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.reviews-header h3 {
+  color: #5a3b6e;
+  font-size: 24px;
+  margin: 0;
+}
+
+.reviews-summary {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.average-rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rating-value {
+  font-size: 32px;
+  font-weight: bold;
+  color: #d4af37;
+}
+
+.stars {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.star {
+  font-size: 20px;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star.filled {
+  color: #d4af37;
+}
+
+.review-count {
+  color: #8a6a9e;
+  font-size: 14px;
+}
+
+.review-form {
+  background: rgba(212, 175, 55, 0.05);
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.review-form h4 {
+  color: #5a3b6e;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.rating-input {
+  margin-bottom: 20px;
+}
+
+.rating-input label {
+  display: block;
+  color: #5a3b6e;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.stars-input {
+  display: flex;
+  gap: 8px;
+}
+
+.stars-input .star {
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.comment-input {
+  margin-bottom: 20px;
+}
+
+.comment-input label {
+  display: block;
+  color: #5a3b6e;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.comment-input textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: white;
+  color: #5a3b6e;
+  font-size: 14px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.comment-input textarea:focus {
+  outline: none;
+  border-color: #d4af37;
+}
+
+.submit-review-btn {
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #d4af37 0%, #e8b3d1 100%);
+  border: none;
+  border-radius: 30px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.submit-review-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
+}
+
+.already-reviewed {
+  text-align: center;
+  padding: 20px;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: 12px;
+  color: #4caf50;
+}
+
+.login-to-review {
+  text-align: center;
+  padding: 20px;
+}
+
+.login-to-review a {
+  color: #d4af37;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-to-review a:hover {
+  text-decoration: underline;
+}
+
+.review-message {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.review-message.success {
+  background: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+}
+
+.review-message.error {
+  background: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+}
+
+.reviews-loading {
+  text-align: center;
+  padding: 40px;
+  color: #8a6a9e;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.review-card {
+  background: rgba(212, 175, 55, 0.03);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s;
+}
+
+.review-card:hover {
+  background: rgba(212, 175, 55, 0.06);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.reviewer-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.reviewer-name {
+  font-weight: bold;
+  color: #5a3b6e;
+}
+
+.review-date {
+  font-size: 12px;
+  color: #8a6a9e;
+}
+
+.review-rating {
+  display: flex;
+  gap: 4px;
+}
+
+.review-rating .star {
+  font-size: 16px;
+  cursor: default;
+}
+
+.review-comment p {
+  color: #6a4a7e;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.no-reviews {
+  text-align: center;
+  padding: 40px;
+  color: #8a6a9e;
+  background: rgba(212, 175, 55, 0.03);
+  border-radius: 16px;
+}
+
+@media (max-width: 768px) {
+  .reviews-section {
+    padding: 20px;
+  }
+  
+  .reviews-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .stars-input .star {
+    font-size: 24px;
+  }
+}

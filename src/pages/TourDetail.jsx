@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { toursData, getTourById } from '../data/toursData';
+import Reviews from '../components/Reviews';
 import './TourDetail.css';
 
 const TourDetail = () => {
@@ -27,7 +28,7 @@ const TourDetail = () => {
           <div className="detail-hero-content">
             <h1>{tour.name}</h1>
             <p>{tour.city}, {tour.country}</p>
-            <div className="detail-price">€{tour.price}</div>
+            <div className="detail-price">₽{tour.price}</div>
           </div>
         </div>
       </div>
@@ -91,6 +92,7 @@ const TourDetail = () => {
           </div>
         </div>
       </div>
+      <Reviews tourId={tour.id} tourName={tour.name} />
 
       {similarTours.length > 0 && (
         <div className="similar-tours">

@@ -1,11 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Globe from '../components/Globe';
+import { useNavigate } from 'react-router-dom';
 import './Home.css';
 
 const Home = () => {
   const [scrollY, setScrollY] = useState(0);
   const heroRef = useRef(null);
   const cardsRef = useRef([]);
+  const navigate = useNavigate();
+  const [selectedTourId, setSelectedTourId] = useState(null);
+  const handleTourSelect = (tourId) => {
+  setSelectedTourId(tourId);
+  navigate(`/tour/${tourId}`);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -95,6 +103,9 @@ const Home = () => {
             <img src="https://i.pinimg.com/736x/8c/2c/32/8c2c329254e8dfe728d38bffbdc37c26.jpg" alt="luxury travel" />
           </div>
         </div>
+      </div>
+      <div className="globe-section">
+        <Globe onTourSelect={handleTourSelect} selectedTourId={selectedTourId} />
       </div>
       <div className="destinations-section">
         <h2>ПОПУЛЯРНЫЕ <span>НАПРАВЛЕНИЯ</span></h2>

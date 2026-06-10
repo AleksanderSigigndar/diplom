@@ -12,6 +12,8 @@ import WhyUs from './pages/WhyUs';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 import Footer from './components/Footer';
+import Visa from './pages/Visa';
+import AllReviews from './pages/AllReviews';
 import './App.css';
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
           <Route path="/why-us" element={<WhyUs />} />
+          <Route path="/visa" element={<Visa />} />
+          <Route path="/reviews" element={<AllReviews />} />
         </Routes>
         <Footer />
       </div>
