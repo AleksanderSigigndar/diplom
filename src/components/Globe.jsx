@@ -1,333 +1,308 @@
 import React, { useRef, useState, useEffect, Suspense } from 'react';
 import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
-import { OrbitControls, Html, Text, Sphere, Line } from '@react-three/drei';
+import { OrbitControls, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { toursData } from '../data/toursData';
 import './Globe.css';
 
-// Текстура Земли (высокое разрешение)
 const earthTexture = "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg";
 const cloudTexture = "https://threejs.org/examples/textures/planets/earth_clouds_1024.png";
 
-// Компонент маркера на глобусе
-const GlobeMarker = ({ position, name, price, onClick, isActive, onHover }) => {
+// Координаты городов
+const cityCoordinates = {
+  'Церматт': { lat: 46.0, lon: 7.7 },
+  'Позитано': { lat: 40.6, lon: 14.5 },
+  'Ойя': { lat: 36.5, lon: 25.4 },
+  'Миконос': { lat: 37.5, lon: 25.3 },
+  'Сен-Тропе': { lat: 43.3, lon: 6.6 },
+  'Тромсё': { lat: 69.6, lon: 19.0 },
+  'Рейкьявик': { lat: 64.1, lon: -21.9 },
+  'Дору': { lat: 41.1, lon: -7.9 },
+  'Каппадокия': { lat: 38.6, lon: 34.8 },
+  'Банф': { lat: 51.2, lon: -115.6 },
+  'Нью-Йорк': { lat: 40.7, lon: -74.0 },
+  'Мауи': { lat: 20.8, lon: -156.3 },
+  'Нассау': { lat: 25.0, lon: -77.4 },
+  'Ла-Фортуна': { lat: 10.5, lon: -84.6 },
+  'Куско': { lat: -13.5, lon: -72.0 },
+  'Торрес-дель-Пайне': { lat: -51.0, lon: -73.0 },
+  'Киото': { lat: 35.0, lon: 135.8 },
+  'Северный Мале': { lat: 4.2, lon: 73.5 },
+  'Дубай': { lat: 25.3, lon: 55.3 },
+  'Убуд': { lat: -8.5, lon: 115.3 },
+  'Пхукет': { lat: 7.9, lon: 98.4 },
+  'Джайпур': { lat: 26.9, lon: 75.8 },
+  'Серенгети': { lat: -2.3, lon: 34.8 },
+  'Марракеш': { lat: 31.6, lon: -8.0 },
+  'Кейптаун': { lat: -33.9, lon: 18.4 },
+  'Луксор': { lat: 25.7, lon: 32.6 },
+  'Маэ': { lat: -4.7, lon: 55.5 },
+  'Бора-Бора': { lat: -16.5, lon: -151.7 },
+  'Нанди': { lat: -17.8, lon: 177.4 },
+  'Сидней': { lat: -33.9, lon: 151.2 },
+};
+
+const getCityCoordinates = (city) => cityCoordinates[city] || { lat: 20, lon: 0 };
+
+const latLonToXYZ = (lat, lon, radius = 1.0) => {
+  const phi = (90 - lat) * Math.PI / 180;
+  const theta = lon * Math.PI / 180;
+  return [
+    radius * Math.sin(phi) * Math.cos(theta),
+    radius * Math.cos(phi),
+    radius * Math.sin(phi) * Math.sin(theta)
+  ];
+};
+
+// Компонент маркера с фиксированным размером, но хорошей видимостью
+const GlobeMarker = ({ position, name, price, city, country, onClick, isActive, onHoverChange }) => {
   const [hovered, setHovered] = useState(false);
-  const markerRef = useRef();
-  
-  useFrame(() => {
-    if (markerRef.current) {
-      markerRef.current.lookAt(0, 0, 0);
-    }
-  });
+  // Фиксированный размер маркера
+  const markerSize = 0.045;
   
   return (
     <group position={position}>
-      {/* Анимированное кольцо вокруг маркера */}
-      <mesh ref={markerRef} position={[0, 0, 0.55]}>
-        <ringGeometry args={[0.06, 0.1, 32]} />
+      {/* Эффект свечения при наведении */}
+      {hovered && (
+        <mesh>
+          <sphereGeometry args={[markerSize * 1.8, 16, 16]} />
+          <meshStandardMaterial 
+            color="#d4af37" 
+            transparent 
+            opacity={0.4}
+            emissive="#d4af37"
+            emissiveIntensity={0.3}
+          />
+        </mesh>
+      )}
+      
+      {/* Основной маркер */}
+      <mesh
+        onClick={(e) => { e.stopPropagation(); onClick(); }}
+        onPointerOver={() => { setHovered(true); onHoverChange(true); }}
+        onPointerOut={() => { setHovered(false); onHoverChange(false); }}
+      >
+        <sphereGeometry args={[markerSize, 24, 24]} />
         <meshStandardMaterial 
-          color={isActive || hovered ? "#d4af37" : "#e8b3d1"} 
-          emissive={isActive || hovered ? "#d4af37" : "#c9a5e0"}
-          emissiveIntensity={0.5}
-          transparent
-          opacity={0.8}
+          color={isActive || hovered ? "#ffd700" : "#c77dff"} 
+          emissive={isActive || hovered ? "#d4af37" : "#c77dff"}
+          emissiveIntensity={hovered ? 0.5 : 0.2}
+          metalness={0.4}
+          roughness={0.3}
         />
       </mesh>
       
-      {/* Сфера маркера */}
-      <mesh
-        ref={markerRef}
-        position={[0, 0, 0.5]}
-        onClick={onClick}
-        onPointerOver={() => { setHovered(true); onHover(true, name, price, position); }}
-        onPointerOut={() => { setHovered(false); onHover(false); }}
-      >
-        <sphereGeometry args={[0.045, 16, 16]} />
-        <meshStandardMaterial 
-          color={isActive || hovered ? "#d4af37" : "#c77dff"} 
-          emissive={isActive || hovered ? "#d4af37" : "#c77dff"}
-          emissiveIntensity={0.3}
-          metalness={0.3}
-          roughness={0.4}
-        />
-      </mesh>
+      {/* Тултип */}
+      {hovered && (
+        <Html distanceFactor={1.2}>
+          <div className="globe-marker-tooltip">
+            <div className="tooltip-title">{name}</div>
+            <div className="tooltip-location">{city}, {country}</div>
+            <div className="tooltip-price">от {price.toLocaleString('ru-RU')} ₽</div>
+          </div>
+        </Html>
+      )}
     </group>
   );
 };
-
-// Компонент тултипа
-const Tooltip = ({ visible, name, price, position, camera }) => {
-  const [screenPos, setScreenPos] = useState({ x: 0, y: 0 });
+// Добавьте этот компонент в Globe.jsx
+const HtmlMarkers = ({ tours, onTourSelect, selectedTourId, camera }) => {
+  const [markers, setMarkers] = useState([]);
   
-  useEffect(() => {
-    if (visible && position && camera) {
-      const vector = new THREE.Vector3(position.x, position.y + 0.3, position.z);
+  useFrame(() => {
+    // Пересчёт позиций маркеров каждый кадр
+    const newMarkers = tours.map(tour => {
+      const pos = latLonToXYZ(tour.coords.lat, tour.coords.lon, 1.05);
+      const vector = new THREE.Vector3(pos[0], pos[1], pos[2]);
       vector.project(camera);
-      const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
-      const y = (-vector.y * 0.5 + 0.5) * window.innerHeight;
-      setScreenPos({ x, y });
-    }
-  }, [visible, position, camera]);
-  
-  if (!visible) return null;
-  
-  return (
-    <div 
-      className="globe-tooltip"
-      style={{
-        position: 'fixed',
-        left: screenPos.x,
-        top: screenPos.y - 60,
-        transform: 'translateX(-50%)',
-        zIndex: 1000
-      }}
-    >
-      <div className="tooltip-content">
-        <h4>{name}</h4>
-        <p>от {price.toLocaleString('ru-RU')} ₽</p>
-        <button className="tooltip-btn">Подробнее</button>
-      </div>
-      <div className="tooltip-arrow"></div>
-    </div>
-  );
-};
-
-// Атмосфера вокруг Земли
-const Atmosphere = () => {
-  return (
-    <mesh>
-      <sphereGeometry args={[1.02, 64, 64]} />
-      <meshPhongMaterial 
-        color="#e8b3d1" 
-        transparent 
-        opacity={0.15}
-        side={THREE.BackSide}
-      />
-    </mesh>
-  );
-};
-
-// Облака
-const Clouds = () => {
-  const cloudMap = useLoader(THREE.TextureLoader, cloudTexture);
-  const cloudRef = useRef();
-  
-  useFrame(() => {
-    if (cloudRef.current) {
-      cloudRef.current.rotation.y += 0.0005;
-    }
+      
+      if (vector.z < 1) {
+        const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
+        const y = (-vector.y * 0.5 + 0.5) * window.innerHeight;
+        return { ...tour, screenX: x, screenY: y, visible: true };
+      }
+      return { ...tour, visible: false };
+    });
+    setMarkers(newMarkers);
   });
-  
-  return (
-    <mesh ref={cloudRef}>
-      <sphereGeometry args={[1.01, 64, 64]} />
-      <meshPhongMaterial 
-        map={cloudMap} 
-        transparent 
-        opacity={0.15}
-        blending={THREE.AdditiveBlending}
-      />
-    </mesh>
-  );
-};
-
-// Звёздное небо
-const Stars = () => {
-  const [starGeometry] = useState(() => {
-    const geometry = new THREE.BufferGeometry();
-    const vertices = [];
-    for (let i = 0; i < 3000; i++) {
-      const x = (Math.random() - 0.5) * 2000;
-      const y = (Math.random() - 0.5) * 2000;
-      const z = (Math.random() - 0.5) * 1000 - 500;
-      vertices.push(x, y, z);
-    }
-    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
-    return geometry;
-  });
-  
-  return (
-    <points geometry={starGeometry}>
-      <pointsMaterial color="#ffffff" size={0.35} transparent opacity={0.6} />
-    </points>
-  );
-};
-
-// Главный компонент глобуса
-const GlobeScene = ({ onMarkerSelect, selectedTourId }) => {
-  const [hoveredMarker, setHoveredMarker] = useState({ visible: false, name: '', price: 0, position: null });
-  const [tooltipCamera, setTooltipCamera] = useState(null);
-  const earthRef = useRef();
-  const groupRef = useRef();
-  const { camera } = useThree();
-  
-  // Получение координат для маркеров на основе названия страны
-  const getCoordinates = (country) => {
-    const coords = {
-      'Швейцария': { lat: 46.8182, lon: 8.2275 },
-      'Мальдивы': { lat: 3.2028, lon: 73.2207 },
-      'Греция': { lat: 39.0742, lon: 21.8243 },
-      'Французская Полинезия': { lat: -17.6797, lon: -149.4068 },
-      'Япония': { lat: 36.2048, lon: 138.2529 },
-      'Италия': { lat: 41.8719, lon: 12.5674 },
-      'Норвегия': { lat: 60.4720, lon: 8.4689 },
-      'ОАЭ': { lat: 23.4241, lon: 53.8478 },
-      'Танзания': { lat: -6.3690, lon: 34.8888 },
-      'Франция': { lat: 46.2276, lon: 2.2137 },
-      'Индонезия': { lat: -0.7893, lon: 113.9213 },
-      'Перу': { lat: -9.1900, lon: -75.0152 },
-      'Багамы': { lat: 25.0343, lon: -77.3963 },
-      'США': { lat: 37.0902, lon: -95.7129 },
-      'Исландия': { lat: 64.9631, lon: -19.0208 },
-      'Таиланд': { lat: 15.8700, lon: 100.9925 },
-      'Марокко': { lat: 31.7917, lon: -7.0926 },
-      'Австралия': { lat: -25.2744, lon: 133.7751 },
-      'ЮАР': { lat: -30.5595, lon: 22.9375 },
-      'Коста-Рика': { lat: 9.7489, lon: -83.7534 },
-      'Египет': { lat: 26.8206, lon: 30.8025 },
-      'Португалия': { lat: 39.3999, lon: -8.2245 },
-      'Турция': { lat: 38.9637, lon: 35.2433 },
-      'Сейшелы': { lat: -4.6796, lon: 55.4920 },
-      'Канада': { lat: 56.1304, lon: -106.3468 },
-      'Индия': { lat: 20.5937, lon: 78.9629 },
-      'Чили': { lat: -35.6751, lon: -71.5430 },
-      'Фиджи': { lat: -17.7134, lon: 178.0650 }
-    };
-    return coords[country] || { lat: 20, lon: 0 };
-  };
-  
-  // Конвертация широты/долготы в 3D координаты
-  const latLonToVector3 = (lat, lon, radius = 1.05) => {
-    const phi = (90 - lat) * Math.PI / 180;
-    const theta = lon * Math.PI / 180;
-    const x = radius * Math.sin(phi) * Math.cos(theta);
-    const y = radius * Math.cos(phi);
-    const z = radius * Math.sin(phi) * Math.sin(theta);
-    return [x, y, z];
-  };
-  
-  // Получение уникальных стран из туров
-  const uniqueCountries = [...new Map(toursData.map(tour => [tour.country, tour])).values()];
-  
-  // Вращение глобуса
-  useFrame(() => {
-    if (earthRef.current && !hoveredMarker.visible) {
-      earthRef.current.rotation.y += 0.001;
-    }
-  });
-  
-  useEffect(() => {
-    setTooltipCamera(camera);
-  }, [camera]);
   
   return (
     <>
-      <ambientLight intensity={0.3} />
-      <pointLight position={[10, 10, 10]} intensity={1} />
-      <pointLight position={[-10, -10, -10]} intensity={0.5} />
+      {markers.filter(m => m.visible).map(tour => (
+        <div
+          key={tour.id}
+          className={`globe-marker-point ${selectedTourId === tour.id ? 'active' : ''}`}
+          style={{
+            position: 'fixed',
+            left: tour.screenX,
+            top: tour.screenY,
+            transform: 'translate(-50%, -50%)',
+            zIndex: 100,
+            cursor: 'pointer'
+          }}
+          onClick={() => onTourSelect(tour.id)}
+          onMouseEnter={(e) => {
+            // Показать тултип
+            const tooltip = document.createElement('div');
+            tooltip.className = 'globe-marker-tooltip';
+            tooltip.innerHTML = `
+              <div class="tooltip-title">${tour.name}</div>
+              <div class="tooltip-location">${tour.city}, ${tour.country}</div>
+              <div class="tooltip-price">от ${tour.price.toLocaleString('ru-RU')} ₽</div>
+            `;
+            tooltip.style.position = 'fixed';
+            tooltip.style.left = tour.screenX + 'px';
+            tooltip.style.top = (tour.screenY - 40) + 'px';
+            tooltip.style.transform = 'translateX(-50%)';
+            tooltip.style.zIndex = '1001';
+            document.body.appendChild(tooltip);
+            e.target._tooltip = tooltip;
+          }}
+          onMouseLeave={(e) => {
+            if (e.target._tooltip) {
+              e.target._tooltip.remove();
+            }
+          }}
+        />
+      ))}
+    </>
+  );
+};
+
+const Atmosphere = () => (
+  <mesh>
+    <sphereGeometry args={[1.02, 64, 64]} />
+    <meshPhongMaterial color="#e8b3d1" transparent opacity={0.08} side={THREE.BackSide} />
+  </mesh>
+);
+
+const Clouds = () => {
+  const cloudMap = useLoader(THREE.TextureLoader, cloudTexture);
+  const cloudRef = useRef();
+  useFrame(() => {
+    if (cloudRef.current) cloudRef.current.rotation.y += 0.0005;
+  });
+  return (
+    <mesh ref={cloudRef}>
+      <sphereGeometry args={[1.01, 64, 64]} />
+      <meshPhongMaterial map={cloudMap} transparent opacity={0.1} blending={THREE.AdditiveBlending} />
+    </mesh>
+  );
+};
+
+const Stars = () => {
+  const geometry = new THREE.BufferGeometry();
+  const vertices = [];
+  for (let i = 0; i < 3000; i++) {
+    vertices.push((Math.random() - 0.5) * 2000);
+    vertices.push((Math.random() - 0.5) * 2000);
+    vertices.push((Math.random() - 0.5) * 1000 - 500);
+  }
+  geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
+  return <points geometry={geometry}><pointsMaterial color="#ffffff" size={0.3} transparent opacity={0.6} /></points>;
+};
+
+const GlobeScene = ({ onMarkerSelect, selectedTourId }) => {
+  const earthRef = useRef();
+  const [isHovering, setIsHovering] = useState(false);
+  const rotationSpeed = 0.001;
+  
+  // Уникальные города
+  const uniqueCities = new Map();
+  toursData.forEach(tour => {
+    if (!uniqueCities.has(tour.city)) {
+      uniqueCities.set(tour.city, tour);
+    }
+  });
+  const uniqueTours = Array.from(uniqueCities.values());
+  
+  const toursWithCoords = uniqueTours.map(tour => ({
+    ...tour,
+    coords: getCityCoordinates(tour.city)
+  }));
+  
+  useFrame(() => {
+    if (earthRef.current && !isHovering) {
+      earthRef.current.rotation.y += rotationSpeed;
+    }
+  });
+  
+  return (
+    <>
+      <ambientLight intensity={0.4} />
+      <pointLight position={[10, 10, 10]} intensity={1.2} />
       <directionalLight position={[5, 3, 5]} intensity={0.8} />
       
-      <group ref={groupRef}>
-        <mesh ref={earthRef}>
+      <group ref={earthRef}>
+        <mesh>
           <sphereGeometry args={[1, 128, 128]} />
-          <meshStandardMaterial 
-            map={useLoader(THREE.TextureLoader, earthTexture)}
-            metalness={0.1}
-            roughness={0.5}
-            emissive="#1a1a2e"
-            emissiveIntensity={0.1}
-          />
+          <meshStandardMaterial map={useLoader(THREE.TextureLoader, earthTexture)} />
         </mesh>
         
-        <Atmosphere />
-        <Clouds />
-        
-        {/* Маркеры туров */}
-        {uniqueCountries.map((tour) => {
-          const coords = getCoordinates(tour.country);
-          const position = latLonToVector3(coords.lat, coords.lon);
-          const isActive = selectedTourId === tour.id;
-          
+        {toursWithCoords.map((tour) => {
+          const pos = latLonToXYZ(tour.coords.lat, tour.coords.lon, 1.01);
           return (
             <GlobeMarker
               key={tour.id}
-              position={position}
+              position={pos}
               name={tour.name}
               price={tour.price}
-              isActive={isActive}
+              city={tour.city}
+              country={tour.country}
+              isActive={selectedTourId === tour.id}
               onClick={() => onMarkerSelect(tour.id)}
-              onHover={(visible, name, price, pos) => {
-                setHoveredMarker({ visible, name, price, position: pos });
-              }}
+              onHoverChange={setIsHovering}
             />
           );
         })}
       </group>
       
+      <Atmosphere />
+      <Clouds />
+      <Stars />
+      
       <OrbitControls
         enableZoom={true}
         enablePan={false}
-        zoomSpeed={0.8}
+        zoomSpeed={1.0}
         rotateSpeed={0.8}
-        minDistance={1.5}
-        maxDistance={4}
-        autoRotate={false}
-        autoRotateSpeed={0.5}
-      />
-      
-      <Tooltip 
-        visible={hoveredMarker.visible}
-        name={hoveredMarker.name}
-        price={hoveredMarker.price}
-        position={hoveredMarker.position}
-        camera={tooltipCamera}
+        minDistance={1.2}
+        maxDistance={3.5}
       />
     </>
   );
 };
 
-// Основной компонент
 const Globe = ({ onTourSelect, selectedTourId }) => {
-  const [isGlobeReady, setIsGlobeReady] = useState(false);
+  const [ready, setReady] = useState(false);
   
   return (
     <div className="globe-container">
       <div className="globe-header">
-        <h2 className="globe-title">
-          Путешествуйте по <span className="gradient-text">всему миру</span>
-        </h2>
-        <p className="globe-subtitle">
-          Наведите на маркер, чтобы увидеть информацию о туре
-        </p>
+        <h2>Путешествуйте по <span className="gradient-text">всему миру</span></h2>
+        <p>Наведите на маркер, чтобы увидеть информацию о туре</p>
       </div>
       
       <div className="globe-wrapper">
-        {!isGlobeReady && (
+        {!ready && (
           <div className="globe-loader">
             <div className="loader-spinner"></div>
-            <p>Загрузка 3D-глобуса...</p>
+            <p>Загрузка глобуса...</p>
           </div>
         )}
         
-        <Canvas
-          className="globe-canvas"
-          camera={{ position: [0, 0, 2.8], fov: 45 }}
-          onCreated={() => setIsGlobeReady(true)}
-          style={{ opacity: isGlobeReady ? 1 : 0 }}
-        >
+        <Canvas camera={{ position: [0, 0, 2.5], fov: 45 }} onCreated={() => setReady(true)} style={{ opacity: ready ? 1 : 0 }}>
           <Suspense fallback={null}>
-            <GlobeScene 
-              onMarkerSelect={onTourSelect} 
-              selectedTourId={selectedTourId}
-            />
+            <GlobeScene onMarkerSelect={onTourSelect} selectedTourId={selectedTourId} />
           </Suspense>
         </Canvas>
       </div>
       
       <div className="globe-instructions">
         <span>🖱️ Вращайте глобус мышью</span>
-        <span>🔍 Используйте колесико для масштабирования</span>
-        <span>📍 Нажмите на маркер, чтобы перейти к туру</span>
+        <span>🔍 Колесико для масштаба</span>
+        <span>📍 Нажмите на маркер → переход к туру</span>
+        <span>⏸️ При наведении вращение останавливается</span>
       </div>
     </div>
   );
