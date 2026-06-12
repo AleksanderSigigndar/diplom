@@ -33,7 +33,6 @@ const Reviews = ({ tourId, tourName }) => {
       console.log("=== ПОИСК ОТЗЫВОВ ===");
       console.log("tourId (тип):", typeof tourId, "значение:", tourId);
       
-      // Пробуем найти отзывы где tourId как строка
       let q = query(
         collection(db, 'reviews'),
         where('tourId', '==', String(tourId)),
@@ -44,7 +43,6 @@ const Reviews = ({ tourId, tourName }) => {
       let snapshot = await getDocs(q);
       console.log("Поиск по строке:", snapshot.size, "отзывов");
       
-      // Если не нашли, пробуем как число
       if (snapshot.empty) {
         q = query(
           collection(db, 'reviews'),
@@ -175,7 +173,7 @@ const Reviews = ({ tourId, tourName }) => {
         {user ? (
           userReview ? (
             <div className="already-reviewed">
-              <p>✓ Вы уже оставили отзыв на этот тур. Спасибо за ваше мнение!</p>
+              <p>Вы уже оставили отзыв на этот тур. Спасибо за ваше мнение!</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
@@ -202,7 +200,7 @@ const Reviews = ({ tourId, tourName }) => {
           )
         ) : (
           <div className="login-to-review">
-            <p>Чтобы оставить отзыв, пожалуйста, <a href="/login">войдите</a> в аккаунт</p>
+            <p>Чтобы оставить отзыв, пожалуйста, <a href="/auth">войдите</a> в аккаунт</p>
           </div>
         )}
         {message && <div className={`review-message ${message.includes('✓') ? 'success' : 'error'}`}>{message}</div>}
@@ -233,7 +231,7 @@ const Reviews = ({ tourId, tourName }) => {
         </div>
       ) : (
         <div className="no-reviews">
-          <p>📝 Пока нет отзывов. Будьте первым, кто оценит этот тур!</p>
+          <p>Пока нет отзывов. Будьте первым, кто оценит этот тур!</p>
         </div>
       )}
     </div>

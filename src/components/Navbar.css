@@ -270,7 +270,7 @@
 }
 
 /* Адаптив для мобильных */
-@media (max-width: 768px) {
+@media (max-width: 1550px) {
   .navbar {
     padding: 15px 25px;
     background: rgba(0, 0, 0, 0.8);
@@ -290,3 +290,4 @@
     font-size: 24px;
   }
 }
+

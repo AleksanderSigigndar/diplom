@@ -10,36 +10,36 @@ const cloudTexture = "https://threejs.org/examples/textures/planets/earth_clouds
 
 // Координаты городов
 const cityCoordinates = {
-  'Церматт': { lat: 46.0, lon: 7.7 },
-  'Позитано': { lat: 40.6, lon: 14.5 },
-  'Ойя': { lat: 36.5, lon: 25.4 },
-  'Миконос': { lat: 37.5, lon: 25.3 },
-  'Сен-Тропе': { lat: 43.3, lon: 6.6 },
-  'Тромсё': { lat: 69.6, lon: 19.0 },
+  'Церматт': { lat: 46.0, lon: -7.7 },
+  'Позитано': { lat: 40.6, lon: -15.5 },
+  'Ойя': { lat: 38.5, lon: -22.4 },
+  'Миконос': { lat: 37.5, lon: -25.3 },
+  'Сен-Тропе': { lat: 43.3, lon: -6.6 },
+  'Тромсё': { lat: 69.6, lon: -18.0 },
   'Рейкьявик': { lat: 64.1, lon: -21.9 },
-  'Дору': { lat: 41.1, lon: -7.9 },
-  'Каппадокия': { lat: 38.6, lon: 34.8 },
-  'Банф': { lat: 51.2, lon: -115.6 },
-  'Нью-Йорк': { lat: 40.7, lon: -74.0 },
-  'Мауи': { lat: 20.8, lon: -156.3 },
-  'Нассау': { lat: 25.0, lon: -77.4 },
-  'Ла-Фортуна': { lat: 10.5, lon: -84.6 },
-  'Куско': { lat: -13.5, lon: -72.0 },
-  'Торрес-дель-Пайне': { lat: -51.0, lon: -73.0 },
-  'Киото': { lat: 35.0, lon: 135.8 },
-  'Северный Мале': { lat: 4.2, lon: 73.5 },
-  'Дубай': { lat: 25.3, lon: 55.3 },
-  'Убуд': { lat: -8.5, lon: 115.3 },
-  'Пхукет': { lat: 7.9, lon: 98.4 },
-  'Джайпур': { lat: 26.9, lon: 75.8 },
-  'Серенгети': { lat: -2.3, lon: 34.8 },
-  'Марракеш': { lat: 31.6, lon: -8.0 },
-  'Кейптаун': { lat: -33.9, lon: 18.4 },
-  'Луксор': { lat: 25.7, lon: 32.6 },
-  'Маэ': { lat: -4.7, lon: 55.5 },
-  'Бора-Бора': { lat: -16.5, lon: -151.7 },
-  'Нанди': { lat: -17.8, lon: 177.4 },
-  'Сидней': { lat: -33.9, lon: 151.2 },
+  'Дору': { lat: 41.1, lon: 6.9 },
+  'Каппадокия': { lat: 38.6, lon: -34.8 },
+  'Банф': { lat: 51.2, lon: 115.6 },
+  'Нью-Йорк': { lat: 41.7, lon: 73.0 },
+  'Мауи': { lat: 20.8, lon: 155.3 },
+  'Нассау': { lat: 25.0, lon: 77.4 },
+  'Ла-Фортуна': { lat: 10.5, lon: 83.6 },
+  'Куско': { lat: -13.5, lon: 71.0 },
+  'Торрес-дель-Пайне': { lat: -41.0, lon: 70.0 },
+  'Киото': { lat: 35.0, lon: 221.8 },
+  'Северный Мале': { lat: 4.2, lon: -73.5 },
+  'Дубай': { lat: 25.3, lon: -55.3 },
+  'Убуд': { lat: -8.5, lon: -115.3 },
+  'Пхукет': { lat: 7.9, lon: -98.4 },
+  'Джайпур': { lat: 26.9, lon: -75.8 },
+  'Серенгети': { lat: -2.3, lon: -34.8 },
+  'Марракеш': { lat: 31.6, lon: 7.0 },
+  'Кейптаун': { lat: -31.9, lon: -18.4 },
+  'Луксор': { lat: 25.7, lon: -32.6 },
+  'Маэ': { lat: -4.7, lon: -55.5 },
+  'Бора-Бора': { lat: -16.5, lon: 151.7 },
+  'Нанди': { lat: -17.8, lon: -177.4 },
+  'Сидней': { lat: -33.9, lon: -151.2 },
 };
 
 const getCityCoordinates = (city) => cityCoordinates[city] || { lat: 20, lon: 0 };
@@ -54,18 +54,23 @@ const latLonToXYZ = (lat, lon, radius = 1.0) => {
   ];
 };
 
-// Компонент маркера с фиксированным размером, но хорошей видимостью
-const GlobeMarker = ({ position, name, price, city, country, onClick, isActive, onHoverChange }) => {
+const GlobeMarker = ({ position, name, price, city, country, onClick, isActive, onHoverChange, cameraDistance }) => {
   const [hovered, setHovered] = useState(false);
-  // Фиксированный размер маркера
-  const markerSize = 0.045;
+  
+  const minSize = 0.008;
+  const maxSize = 0.03;
+  const minDistance = 1.2;
+  const maxDistance = 3.5;
+  
+  let normalizedDistance = (cameraDistance - minDistance) / (maxDistance - minDistance);
+  normalizedDistance = Math.max(0, Math.min(1, normalizedDistance));
+  const markerSize = minSize + normalizedDistance * (maxSize - minSize);
   
   return (
     <group position={position}>
-      {/* Эффект свечения при наведении */}
       {hovered && (
         <mesh>
-          <sphereGeometry args={[markerSize * 1.8, 16, 16]} />
+          <sphereGeometry args={[markerSize * 2, 16, 16]} />
           <meshStandardMaterial 
             color="#d4af37" 
             transparent 
@@ -76,13 +81,12 @@ const GlobeMarker = ({ position, name, price, city, country, onClick, isActive, 
         </mesh>
       )}
       
-      {/* Основной маркер */}
       <mesh
         onClick={(e) => { e.stopPropagation(); onClick(); }}
         onPointerOver={() => { setHovered(true); onHoverChange(true); }}
         onPointerOut={() => { setHovered(false); onHoverChange(false); }}
       >
-        <sphereGeometry args={[markerSize, 24, 24]} />
+        <sphereGeometry args={[markerSize, 16, 16]} />
         <meshStandardMaterial 
           color={isActive || hovered ? "#ffd700" : "#c77dff"} 
           emissive={isActive || hovered ? "#d4af37" : "#c77dff"}
@@ -92,7 +96,6 @@ const GlobeMarker = ({ position, name, price, city, country, onClick, isActive, 
         />
       </mesh>
       
-      {/* Тултип */}
       {hovered && (
         <Html distanceFactor={1.2}>
           <div className="globe-marker-tooltip">
@@ -103,69 +106,6 @@ const GlobeMarker = ({ position, name, price, city, country, onClick, isActive, 
         </Html>
       )}
     </group>
-  );
-};
-// Добавьте этот компонент в Globe.jsx
-const HtmlMarkers = ({ tours, onTourSelect, selectedTourId, camera }) => {
-  const [markers, setMarkers] = useState([]);
-  
-  useFrame(() => {
-    // Пересчёт позиций маркеров каждый кадр
-    const newMarkers = tours.map(tour => {
-      const pos = latLonToXYZ(tour.coords.lat, tour.coords.lon, 1.05);
-      const vector = new THREE.Vector3(pos[0], pos[1], pos[2]);
-      vector.project(camera);
-      
-      if (vector.z < 1) {
-        const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
-        const y = (-vector.y * 0.5 + 0.5) * window.innerHeight;
-        return { ...tour, screenX: x, screenY: y, visible: true };
-      }
-      return { ...tour, visible: false };
-    });
-    setMarkers(newMarkers);
-  });
-  
-  return (
-    <>
-      {markers.filter(m => m.visible).map(tour => (
-        <div
-          key={tour.id}
-          className={`globe-marker-point ${selectedTourId === tour.id ? 'active' : ''}`}
-          style={{
-            position: 'fixed',
-            left: tour.screenX,
-            top: tour.screenY,
-            transform: 'translate(-50%, -50%)',
-            zIndex: 100,
-            cursor: 'pointer'
-          }}
-          onClick={() => onTourSelect(tour.id)}
-          onMouseEnter={(e) => {
-            // Показать тултип
-            const tooltip = document.createElement('div');
-            tooltip.className = 'globe-marker-tooltip';
-            tooltip.innerHTML = `
-              <div class="tooltip-title">${tour.name}</div>
-              <div class="tooltip-location">${tour.city}, ${tour.country}</div>
-              <div class="tooltip-price">от ${tour.price.toLocaleString('ru-RU')} ₽</div>
-            `;
-            tooltip.style.position = 'fixed';
-            tooltip.style.left = tour.screenX + 'px';
-            tooltip.style.top = (tour.screenY - 40) + 'px';
-            tooltip.style.transform = 'translateX(-50%)';
-            tooltip.style.zIndex = '1001';
-            document.body.appendChild(tooltip);
-            e.target._tooltip = tooltip;
-          }}
-          onMouseLeave={(e) => {
-            if (e.target._tooltip) {
-              e.target._tooltip.remove();
-            }
-          }}
-        />
-      ))}
-    </>
   );
 };
 
@@ -202,12 +142,23 @@ const Stars = () => {
   return <points geometry={geometry}><pointsMaterial color="#ffffff" size={0.3} transparent opacity={0.6} /></points>;
 };
 
+const CameraTracker = ({ onDistanceChange }) => {
+  const { camera } = useThree();
+  
+  useFrame(() => {
+    const distance = camera.position.length();
+    onDistanceChange(distance);
+  });
+  
+  return null;
+};
+
 const GlobeScene = ({ onMarkerSelect, selectedTourId }) => {
   const earthRef = useRef();
   const [isHovering, setIsHovering] = useState(false);
+  const [cameraDistance, setCameraDistance] = useState(2.5);
   const rotationSpeed = 0.001;
   
-  // Уникальные города
   const uniqueCities = new Map();
   toursData.forEach(tour => {
     if (!uniqueCities.has(tour.city)) {
@@ -233,6 +184,8 @@ const GlobeScene = ({ onMarkerSelect, selectedTourId }) => {
       <pointLight position={[10, 10, 10]} intensity={1.2} />
       <directionalLight position={[5, 3, 5]} intensity={0.8} />
       
+      <CameraTracker onDistanceChange={setCameraDistance} />
+      
       <group ref={earthRef}>
         <mesh>
           <sphereGeometry args={[1, 128, 128]} />
@@ -252,6 +205,7 @@ const GlobeScene = ({ onMarkerSelect, selectedTourId }) => {
               isActive={selectedTourId === tour.id}
               onClick={() => onMarkerSelect(tour.id)}
               onHoverChange={setIsHovering}
+              cameraDistance={cameraDistance}
             />
           );
         })}
@@ -299,10 +253,10 @@ const Globe = ({ onTourSelect, selectedTourId }) => {
       </div>
       
       <div className="globe-instructions">
-        <span>🖱️ Вращайте глобус мышью</span>
-        <span>🔍 Колесико для масштаба</span>
-        <span>📍 Нажмите на маркер → переход к туру</span>
-        <span>⏸️ При наведении вращение останавливается</span>
+        <span>Вращайте глобус мышью</span>
+        <span>Колесико для масштаба</span>
+        <span>Нажмите на маркер → переход к туру</span>
+        <span>При наведении вращение останавливается</span>
       </div>
     </div>
   );

@@ -28,7 +28,7 @@ const Navbar = () => {
       <div className="nav-left">
         <Link to="/tours" onClick={() => setMobileMenu(false)}>ТУРЫ</Link>
         <Link to="/visa" onClick={() => setMobileMenu(false)}>ВИЗЫ</Link>
-  <Link to="/reviews" onClick={() => setMobileMenu(false)}>ОТЗЫВЫ</Link>
+        <Link to="/reviews" onClick={() => setMobileMenu(false)}>ОТЗЫВЫ</Link>
         <Link to="/why-us" onClick={() => setMobileMenu(false)}>ПОЧЕМУ МЫ</Link>
     </div>
       <Link to="/" className="nav-logo" onClick={() => setMobileMenu(false)}>
@@ -58,8 +58,10 @@ const Navbar = () => {
       {/* Мобильное меню */}
       {mobileMenu && (
         <div className="mobile-menu">
-          <Link to="/tours" onClick={() => setMobileMenu(false)}>ТУРЫ</Link>
-          <Link to="/why-us" onClick={() => setMobileMenu(false)}>ПОЧЕМУ МЫ</Link>
+        <Link to="/tours" onClick={() => setMobileMenu(false)}>ТУРЫ</Link>
+        <Link to="/visa" onClick={() => setMobileMenu(false)}>ВИЗЫ</Link>
+        <Link to="/reviews" onClick={() => setMobileMenu(false)}>ОТЗЫВЫ</Link>
+        <Link to="/why-us" onClick={() => setMobileMenu(false)}>ПОЧЕМУ МЫ</Link>
           {user ? (
             <>
               <Link to="/profile" onClick={() => setMobileMenu(false)}>ПРОФИЛЬ</Link>

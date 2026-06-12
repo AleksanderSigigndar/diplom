@@ -266,30 +266,29 @@ const deleteReview = async (id) => {
           className={`type-btn ${!reviewsTab && requestType === 'tours' ? 'active' : ''}`}
           onClick={() => { setReviewsTab(false); setRequestType('tours'); setActiveTab('pending'); setExpandedItem(null); }}
         >
-          🏖️ Заявки на туры
+          Заявки на туры
         </button>
         <button 
           className={`type-btn ${!reviewsTab && requestType === 'visa' ? 'active' : ''}`}
           onClick={() => { setReviewsTab(false); setRequestType('visa'); setActiveTab('pending'); setExpandedItem(null); }}
         >
-          🛂 Заявки на визы
+          Заявки на визы
         </button>
         <button 
           className={`type-btn ${reviewsTab ? 'active' : ''}`}
           onClick={() => { setReviewsTab(true); setExpandedItem(null); }}
         >
-          ⭐ Отзывы (модерация)
+          Отзывы (модерация)
         </button>
       </div>
 
-      {/* Табы для заявок (не показываем для отзывов) */}
       {!reviewsTab && (
         <div className="admin-tabs">
           <button 
             className={`tab ${activeTab === 'pending' ? 'active' : ''}`}
             onClick={() => setActiveTab('pending')}
           >
-            <span className="tab-icon">⏳</span>
+            <span className="tab-icon"></span>
             В обработке
             <span className="tab-count">{counts.pending}</span>
           </button>
@@ -297,7 +296,7 @@ const deleteReview = async (id) => {
             className={`tab ${activeTab === 'confirmed' ? 'active' : ''}`}
             onClick={() => setActiveTab('confirmed')}
           >
-            <span className="tab-icon">✓</span>
+            <span className="tab-icon"></span>
             Подтверждённые
             <span className="tab-count">{counts.confirmed}</span>
           </button>
@@ -305,23 +304,21 @@ const deleteReview = async (id) => {
             className={`tab ${activeTab === 'rejected' ? 'active' : ''}`}
             onClick={() => setActiveTab('rejected')}
           >
-            <span className="tab-icon">✗</span>
+            <span className="tab-icon"></span>
             Отказано
             <span className="tab-count">{counts.rejected}</span>
           </button>
         </div>
       )}
 
-      {/* Статистика отзывов */}
       {reviewsTab && (
         <div className="reviews-stats">
-          <span className="stat-pending">⏳ На модерации: {reviewStats.pending}</span>
-          <span className="stat-approved">✓ Одобрено: {reviewStats.approved}</span>
-          <span className="stat-rejected">✗ Отклонено: {reviewStats.rejected}</span>
+          <span className="stat-pending">На модерации: {reviewStats.pending}</span>
+          <span className="stat-approved">Одобрено: {reviewStats.approved}</span>
+          <span className="stat-rejected">Отклонено: {reviewStats.rejected}</span>
         </div>
       )}
 
-      {/* Загрузка */}
       {loading ? (
         <div className="admin-loading">
           <div className="spinner"></div>
@@ -329,34 +326,33 @@ const deleteReview = async (id) => {
         </div>
       ) : !reviewsTab && filteredItems.length === 0 ? (
         <div className="admin-empty">
-          <div className="empty-icon">📭</div>
+          <div className="empty-icon"></div>
           <h3>Нет заявок</h3>
           <p>В этом разделе пока нет заявок</p>
         </div>
       ) : reviewsTab && reviews.length === 0 ? (
         <div className="admin-empty">
-          <div className="empty-icon">⭐</div>
+          <div className="empty-icon"></div>
           <h3>Нет отзывов</h3>
           <p>Пока нет ни одного отзыва</p>
         </div>
       ) : (
         <div className="admin-bookings">
-          {/* ЗАЯВКИ НА ТУРЫ И ВИЗЫ */}
           {!reviewsTab && filteredItems.map(item => (
             <div key={item.id} className={`admin-booking-card ${item.status === 'rejected' ? 'rejected' : ''} ${item.contacted ? 'contacted' : ''}`}>
               <div className="card-header" onClick={() => toggleExpand(item.id)}>
                 <div className="header-left">
                   <span className="booking-id">#{item.id.slice(-8).toUpperCase()}</span>
-                  {requestType === 'visa' && <span className="visa-badge">🛂 Визовая поддержка</span>}
+                  {requestType === 'visa' && <span className="visa-badge">Визовая поддержка</span>}
                   <span className={`status-badge ${item.status || 'pending'}`}>
-                    {item.status === 'pending' && '⏳ В обработке'}
-                    {item.status === 'confirmed' && '✓ Подтверждён'}
-                    {item.status === 'rejected' && '✗ Отказано'}
-                    {!item.status && '⏳ В обработке'}
+                    {item.status === 'pending' && 'В обработке'}
+                    {item.status === 'confirmed' && 'Подтверждён'}
+                    {item.status === 'rejected' && 'Отказано'}
+                    {!item.status && 'В обработке'}
                   </span>
                   {item.contacted && (
                     <span className="contacted-badge">
-                      📞 Связались {item.contactedAt?.toLocaleDateString('ru-RU')}
+                      Связались {item.contactedAt?.toLocaleDateString('ru-RU')}
                     </span>
                   )}
                 </div>
@@ -371,10 +367,9 @@ const deleteReview = async (id) => {
               {expandedItem === item.id && (
                 <div className="card-content">
                   {requestType === 'tours' ? (
-                    // Блок для туров
                     <>
                       <div className="info-section">
-                        <h4>📋 Информация о туре</h4>
+                        <h4>Информация о туре</h4>
                         <div className="info-grid">
                           <div className="info-item">
                             <label>Название тура:</label>
@@ -395,7 +390,7 @@ const deleteReview = async (id) => {
                         </div>
                       </div>
                       <div className="info-section">
-                        <h4>👤 Информация о клиенте</h4>
+                        <h4>Информация о клиенте</h4>
                         <div className="info-grid">
                           <div className="info-item">
                             <label>ФИО:</label>
@@ -406,32 +401,32 @@ const deleteReview = async (id) => {
                             <span>{item.userEmail}</span>
                           </div>
                           <div className="info-item highlight">
-                            <label>📞 Телефон для связи:</label>
+                            <label>Телефон для связи:</label>
                             <span className="main-phone">{item.mainPhone || 'Не указан'}</span>
                           </div>
                         </div>
                       </div>
                       <div className="info-section">
-                        <h4>✈️ Пожелания</h4>
+                        <h4>Пожелания</h4>
                         <div className="info-grid">
                           <div className="info-item">
                             <label>Класс перелёта:</label>
                             <span>
-                              {item.flight === 'business' ? '✈️ Бизнес-класс' : 
-                               item.flight === 'first' ? '💺 Первый класс' : '🚁 Частный самолёт'}
+                              {item.flight === 'business' ? 'Бизнес-класс' : 
+                               item.flight === 'first' ? 'Первый класс' : 'Частный самолёт'}
                             </span>
                           </div>
                           <div className="info-item">
                             <label>Категория отеля:</label>
                             <span>
-                              {item.hotel === '4star' ? '🏨 4★ Люкс' : 
-                               item.hotel === '5star' ? '⭐ 5★ Премиум' : '👑 Ультра-люкс'}
+                              {item.hotel === '4star' ? '4★ Люкс' : 
+                               item.hotel === '5star' ? '5★ Премиум' : 'Ультра-люкс'}
                             </span>
                           </div>
                         </div>
                       </div>
                       <div className="info-section">
-                        <h4>👥 Пассажиры ({item.passengers?.length || 0})</h4>
+                        <h4>Пассажиры ({item.passengers?.length || 0})</h4>
                         <div className="passengers-table">
                           <table>
                             <thead>
@@ -451,10 +446,10 @@ const deleteReview = async (id) => {
                                   <td><strong>{p.name}</strong></td>
                                   <td>{p.age} лет</td>
                                   <td>
-                                    {p.relationship === 'self' ? '👤 Я' : 
-                                     p.relationship === 'spouse' ? '💑 Супруг(а)' : 
-                                     p.relationship === 'child' ? '👶 Ребёнок' : 
-                                     p.relationship === 'parent' ? '👴👵 Родитель' : '🤝 Друг/Подруга'}
+                                    {p.relationship === 'self' ? 'Я' : 
+                                     p.relationship === 'spouse' ? 'Супруг(а)' : 
+                                     p.relationship === 'child' ? 'Ребёнок' : 
+                                     p.relationship === 'parent' ? 'Родитель' : 'Друг/Подруга'}
                                   </td>
                                   <td className="doc-number">{p.passportNumber || 'Не указан'}</td>
                                   <td className="passenger-price">
@@ -468,7 +463,7 @@ const deleteReview = async (id) => {
                       </div>
                       {item.specialRequests && item.specialRequests !== 'Нет' && (
                         <div className="info-section">
-                          <h4>💬 Особые пожелания</h4>
+                          <h4>Особые пожелания</h4>
                           <div className="special-requests">{item.specialRequests}</div>
                         </div>
                       )}
@@ -477,14 +472,14 @@ const deleteReview = async (id) => {
                     // Блок для виз
                     <>
                       <div className="info-section">
-                        <h4>👤 Личные данные</h4>
+                        <h4>Личные данные</h4>
                         <div className="info-grid">
                           <div className="info-item">
                             <label>ФИО:</label>
                             <span>{item.fullName}</span>
                           </div>
                           <div className="info-item">
-                            <label>📞 Телефон:</label>
+                            <label>Телефон:</label>
                             <span className="main-phone">{item.phone}</span>
                           </div>
                           <div className="info-item">
@@ -498,7 +493,7 @@ const deleteReview = async (id) => {
                         </div>
                       </div>
                       <div className="info-section">
-                        <h4>🌍 Информация о визе</h4>
+                        <h4>Информация о визе</h4>
                         <div className="info-grid">
                           <div className="info-item highlight">
                             <label>Страна:</label>
@@ -512,17 +507,17 @@ const deleteReview = async (id) => {
                       </div>
                       {item.documentsLabels && item.documentsLabels.length > 0 && (
                         <div className="info-section">
-                          <h4>📋 Необходимые документы</h4>
+                          <h4>Необходимые документы</h4>
                           <div className="documents-list">
                             {item.documentsLabels.map((doc, idx) => (
-                              <span key={idx} className="doc-tag">📄 {doc}</span>
+                              <span key={idx} className="doc-tag">{doc}</span>
                             ))}
                           </div>
                         </div>
                       )}
                       {item.additionalInfo && item.additionalInfo !== 'Нет' && (
                         <div className="info-section">
-                          <h4>💬 Дополнительная информация</h4>
+                          <h4>Дополнительная информация</h4>
                           <div className="special-requests">{item.additionalInfo}</div>
                         </div>
                       )}
@@ -531,13 +526,13 @@ const deleteReview = async (id) => {
                   
                   {item.status === 'rejected' && item.rejectReason && (
                     <div className="info-section rejected-section">
-                      <h4>❌ Причина отказа</h4>
+                      <h4>Причина отказа</h4>
                       <div className="reject-reason">{item.rejectReason}</div>
                     </div>
                   )}
                   
                   <div className="info-section">
-                    <h4>📅 Даты</h4>
+                    <h4>Даты</h4>
                     <div className="info-grid">
                       <div className="info-item">
                         <label>Дата создания:</label>
@@ -577,13 +572,13 @@ const deleteReview = async (id) => {
                       onClick={() => requestType === 'tours' ? updateStatus(item.id, 'confirmed') : updateVisaStatus(item.id, 'confirmed')} 
                       className="confirm-btn"
                     >
-                      ✓ Подтвердить
+                      Подтвердить
                     </button>
                     <button 
                       onClick={() => openRejectModal(item)} 
                       className="reject-btn"
                     >
-                      ✗ Отказать
+                      Отказать
                     </button>
                   </>
                 )}
@@ -594,13 +589,13 @@ const deleteReview = async (id) => {
                       onClick={() => toggleContacted(item.id, item.contacted, requestType)} 
                       className={`contact-toggle-btn ${item.contacted ? 'contacted' : ''}`}
                     >
-                      {item.contacted ? '📞✓ Связались (снять)' : '📞 Отметить, что связались'}
+                      {item.contacted ? 'Связались (снять)' : 'Отметить, что связались'}
                     </button>
                     <button 
                       onClick={() => requestType === 'tours' ? updateStatus(item.id, 'pending') : updateVisaStatus(item.id, 'pending')} 
                       className="pending-btn"
                     >
-                      🔄 Вернуть в обработку
+                      Вернуть в обработку
                     </button>
                   </>
                 )}
@@ -608,17 +603,16 @@ const deleteReview = async (id) => {
             </div>
           ))}
 
-          {/* ОТЗЫВЫ НА МОДЕРАЦИЮ */}
           {reviewsTab && reviews.map(review => (
             <div key={review.id} className={`admin-booking-card review-card-admin ${review.status}`}>
               <div className="card-header" onClick={() => toggleExpand(review.id)}>
                 <div className="header-left">
                   <span className="booking-id">#{review.id.slice(-8).toUpperCase()}</span>
-                  <span className="review-badge">⭐ Отзыв</span>
+                  <span className="review-badge">Отзыв</span>
                   <span className={`status-badge ${review.status || 'pending'}`}>
-                    {review.status === 'pending' && '⏳ На модерации'}
-                    {review.status === 'approved' && '✓ Одобрен'}
-                    {review.status === 'rejected' && '✗ Отклонён'}
+                    {review.status === 'pending' && 'На модерации'}
+                    {review.status === 'approved' && 'Одобрен'}
+                    {review.status === 'rejected' && 'Отклонён'}
                   </span>
                 </div>
                 <div className="header-right">
@@ -630,7 +624,7 @@ const deleteReview = async (id) => {
               {expandedItem === review.id && (
                 <div className="card-content">
                   <div className="info-section">
-                    <h4>⭐ Информация об отзыве</h4>
+                    <h4>Информация об отзыве</h4>
                     <div className="info-grid">
                       <div className="info-item">
                         <label>Тур:</label>
@@ -642,16 +636,16 @@ const deleteReview = async (id) => {
                       </div>
                       <div className="info-item">
                         <label>Оценка:</label>
-                        <span className="rating-stars">{'⭐'.repeat(review.rating)}</span>
+                        <span className="rating-stars">{''.repeat(review.rating)}</span>
                       </div>
                     </div>
                   </div>
                   <div className="info-section">
-                    <h4>💬 Комментарий</h4>
+                    <h4>Комментарий</h4>
                     <div className="review-comment-admin">{review.comment}</div>
                   </div>
                   <div className="info-section">
-                    <h4>📅 Дата</h4>
+                    <h4>Дата</h4>
                     <div className="info-item">
                       <span>{review.createdAt?.toLocaleString('ru-RU')}</span>
                     </div>
@@ -673,7 +667,6 @@ const deleteReview = async (id) => {
         </div>
       )}
 
-      {/* Модальное окно отказа */}
       {showRejectModal && (
         <div className="modal-overlay" onClick={() => setShowRejectModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>

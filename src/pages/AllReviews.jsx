@@ -86,13 +86,13 @@ const AllReviews = () => {
           className={`filter-btn ${filter === 'high' ? 'active' : ''}`}
           onClick={() => setFilter('high')}
         >
-          Сначала высокие ⭐
+          Сначала высокие 
         </button>
         <button 
           className={`filter-btn ${filter === 'low' ? 'active' : ''}`}
           onClick={() => setFilter('low')}
         >
-          Сначала низкие ⭐
+          Сначала низкие 
         </button>
       </div>
 
@@ -100,7 +100,7 @@ const AllReviews = () => {
         <div className="all-reviews-loading">Загрузка отзывов...</div>
       ) : filteredReviews.length === 0 ? (
         <div className="all-reviews-empty">
-          <div className="empty-icon">📝</div>
+          <div className="empty-icon"></div>
           <h3>Пока нет одобренных отзывов</h3>
           <p>Будьте первым, кто оставит отзыв о путешествии!</p>
           <Link to="/tours" className="browse-tours-btn">Посмотреть туры</Link>
