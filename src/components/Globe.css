@@ -238,11 +238,42 @@
   }
 }
 
-/* Адаптация для мобильных */
+@media (max-width: 1024px) {
+  .globe-container {
+    padding: 50px 25px;
+  }
+  
+  .globe-wrapper {
+    height: 500px;
+  }
+}
+
 @media (max-width: 768px) {
-  .globe-marker-point {
-    width: 8px;
-    height: 8px;
+  .globe-container {
+    padding: 40px 20px;
+  }
+  
+  .globe-title {
+    font-size: 28px;
+  }
+  
+  .globe-subtitle {
+    font-size: 14px;
+    padding: 0 15px;
+  }
+  
+  .globe-wrapper {
+    height: 400px;
+  }
+  
+  .globe-instructions {
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .globe-instructions span {
+    font-size: 11px;
   }
   
   .globe-marker-tooltip {
@@ -257,5 +288,60 @@
   
   .tooltip-price {
     font-size: 13px;
+  }
+  
+  .globe-marker-point {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .globe-container {
+    padding: 30px 15px;
+  }
+  
+  .globe-title {
+    font-size: 24px;
+  }
+  
+  .globe-subtitle {
+    font-size: 12px;
+  }
+  
+  .globe-wrapper {
+    height: 320px;
+    border-radius: 20px;
+  }
+  
+  .globe-instructions {
+    gap: 10px;
+    padding: 12px;
+  }
+  
+  .globe-instructions span {
+    font-size: 10px;
+  }
+  
+  .globe-marker-tooltip {
+    padding: 5px 10px;
+    min-width: 120px;
+  }
+  
+  .tooltip-title {
+    font-size: 10px;
+  }
+  
+  .tooltip-location {
+    font-size: 9px;
+  }
+  
+  .tooltip-price {
+    font-size: 11px;
+  }
+  
+  .globe-marker-point {
+    width: 6px;
+    height: 6px;
   }
 }

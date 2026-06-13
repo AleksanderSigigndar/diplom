@@ -379,15 +379,136 @@ textarea::placeholder {
   }
 }
 
-@media (max-width: 768px) {
+
+@media (max-width: 1024px) {
   .booking-card {
-    padding: 30px;
+    max-width: 700px;
+    padding: 40px;
   }
+}
+
+@media (max-width: 768px) {
+  .booking-container {
+    padding: 80px 20px;
+  }
+  
+  .booking-card {
+    padding: 30px 25px;
+  }
+  
+  .booking-card h2 {
+    font-size: 24px;
+  }
+  
+  .booking-tour {
+    font-size: 14px;
+    margin-bottom: 25px;
+  }
+  
   .form-row {
     grid-template-columns: 1fr;
     gap: 0;
   }
+  
+  .booking-section {
+    margin-bottom: 25px;
+  }
+  
+  .booking-section h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  
+  .passenger-card {
+    padding: 15px;
+  }
+  
+  .passenger-header {
+    font-size: 14px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .remove-btn {
+    padding: 4px 12px;
+    font-size: 12px;
+  }
+  
+  .add-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  
+  .submit-btn {
+    padding: 14px;
+    font-size: 14px;
+  }
+  
+  .message {
+    font-size: 13px;
+    padding: 10px 15px;
+  }
+  
+  .price-calculator h3 {
+    font-size: 16px;
+  }
+  
+  .price-row {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .booking-container {
+    padding: 70px 15px;
+  }
+  
+  .booking-card {
+    padding: 20px 15px;
+  }
+  
   .booking-card h2 {
-    font-size: 24px;
+    font-size: 20px;
+  }
+  
+  .booking-tour {
+    font-size: 12px;
+  }
+  
+  .booking-section h3 {
+    font-size: 16px;
+  }
+  
+  .form-group label {
+    font-size: 13px;
+  }
+  
+  .form-group input, 
+  .form-group textarea,
+  .select-btn {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  
+  .passenger-card {
+    padding: 12px;
+  }
+  
+  .passenger-header {
+    font-size: 13px;
+  }
+  
+  .submit-btn {
+    padding: 12px;
+    font-size: 13px;
+  }
+  
+  .price-row {
+    font-size: 12px;
+  }
+  
+  .price-row.total {
+    font-size: 14px;
   }
 }

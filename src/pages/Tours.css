@@ -418,3 +418,146 @@
   background: linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(232, 179, 209, 0.12) 100%);
   color: #d4af37;
 }
+
+@media (max-width: 1024px) {
+  .tours-content {
+    padding: 50px 25px;
+  }
+  
+  .tours-grid {
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tours-hero-overlay h1 {
+    font-size: 36px;
+  }
+  
+  .tours-hero-overlay p {
+    font-size: 14px;
+    padding: 0 20px;
+  }
+  
+  .tours-content {
+    padding: 40px 20px;
+  }
+  
+  .sort-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 15px 20px;
+  }
+  
+  .sort-info {
+    justify-content: center;
+  }
+  
+  .custom-sort-select {
+    width: 100%;
+  }
+  
+  .sort-button {
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .tours-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  
+  .tour-card {
+    max-width: 400px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  .tour-card-image {
+    height: 200px;
+  }
+  
+  .load-more {
+    width: 100%;
+    max-width: 280px;
+    margin: 40px auto 0;
+    padding: 12px 30px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tours-hero {
+    height: 40vh;
+  }
+  
+  .tours-hero-overlay h1 {
+    font-size: 28px;
+  }
+  
+  .tours-hero-overlay p {
+    font-size: 12px;
+  }
+  
+  .tours-content {
+    padding: 30px 15px;
+  }
+  
+  .sort-bar {
+    padding: 12px 15px;
+  }
+  
+  .sort-info {
+    font-size: 12px;
+  }
+  
+  .sort-info strong {
+    font-size: 14px;
+  }
+  
+  .sort-button {
+    padding: 8px 16px;
+    font-size: 13px;
+    min-width: auto;
+  }
+  
+  .tour-card-image {
+    height: 180px;
+  }
+  
+  .tour-card-content {
+    padding: 15px;
+  }
+  
+  .tour-card-content h3 {
+    font-size: 16px;
+  }
+  
+  .location {
+    font-size: 12px;
+  }
+  
+  .tour-info {
+    font-size: 11px;
+    gap: 10px;
+  }
+  
+  .description {
+    font-size: 12px;
+  }
+  
+  .learn-more {
+    font-size: 13px;
+  }
+  
+  .price-badge {
+    font-size: 12px;
+    padding: 4px 12px;
+  }
+  
+  .rating-badge {
+    font-size: 10px;
+    padding: 3px 10px;
+  }
+}

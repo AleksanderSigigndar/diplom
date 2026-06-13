@@ -53,3 +53,20 @@ a {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-20px); }
 }
+
+/* Дополнительные глобальные адаптивные стили */
+@media (max-width: 768px) {
+  .app {
+    overflow-x: hidden;
+  }
+  
+  input, textarea, button, select {
+    font-size: 16px !important; /* Предотвращает масштабирование на iOS */
+  }
+}
+
+@media (max-width: 480px) {
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+}
